@@ -99,9 +99,9 @@ class DataFieldView extends WatchUi.DataField {
         var h = dc.getHeight();
         var w = dc.getWidth();
         var num_thai_h = dc.getFontHeight(Graphics.FONT_NUMBER_THAI_HOT);
-        var num_hot_h = dc.getFontHeight(Graphics.FONT_NUMBER_HOT);
+        // var num_hot_h = dc.getFontHeight(Graphics.FONT_NUMBER_HOT);
         var num_med_h = dc.getFontHeight(Graphics.FONT_NUMBER_MEDIUM);
-        var num_mild_h = dc.getFontHeight(Graphics.FONT_NUMBER_MILD);
+        // var num_mild_h = dc.getFontHeight(Graphics.FONT_NUMBER_MILD);
         var md_h = dc.getFontHeight(Graphics.FONT_MEDIUM);
         var sm_h = dc.getFontHeight(Graphics.FONT_SMALL);
 
