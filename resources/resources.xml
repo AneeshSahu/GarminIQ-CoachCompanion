@@ -7,6 +7,7 @@
         <property id="intervalVibrate" type="boolean">true</property>
         <property id="intervalTones" type="boolean">true</property>
 
+        <property id="enableAlwaysOnMode" type="boolean">false</property>
         <property id="enableLongRun" type="boolean">false</property>
         <property id="longRunMagicMilePace" type="number">13</property>
 
@@ -28,6 +29,7 @@
         <string id="advanced_group_title">Advanced Settings</string>
         <string id="walkFirst_setting_title">Begin with walking</string>
         <string id="enableLongRun_setting_title">Enable Run Walk Run® with 'Long Easy Run' workouts</string>
+        <string id="enableAlwaysOnMode_setting_title">Enable 'Always On' mode (starts timer when any activity or workout is in progress)</string>
         <string id="longRunMagicMilePace_setting_title">'Long Easy Run' Pace</string>
 
         <string id="manualRunWalk_setting_title">Use A Custom Run/Walk Time</string>
@@ -112,6 +114,9 @@
             <settingConfig type="boolean" />
         </setting>
 
+        <setting propertyKey="@Properties.enableAlwaysOnMode" title="@Strings.enableAlwaysOnMode_setting_title">
+            <settingConfig type="boolean" />
+        </setting>
         <setting propertyKey="@Properties.enableLongRun" title="@Strings.enableLongRun_setting_title">
             <settingConfig type="boolean" />
         </setting>

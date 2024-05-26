@@ -13,6 +13,7 @@ class DataFieldView extends WatchUi.DataField {
     private var _manualRunWalk as Boolean?;
     private var _walkFirst as Boolean?;
     private var _enableLongRun as Boolean?;
+    private var _enableAlwaysOnMode as Boolean?;
     private var _rwrPaceIndex as Number?;
     private var _longRunPaceIndex as Number?;
     private var _runDuration as Number?;
@@ -43,6 +44,7 @@ class DataFieldView extends WatchUi.DataField {
     public function handleSettingUpdate() as Void {
         _manualRunWalk = Properties.getValue("manualRunWalk");
         _enableLongRun = Properties.getValue("enableLongRun");
+        _enableAlwaysOnMode = Properties.getValue("enableAlwaysOnMode");
         _walkFirst = Properties.getValue("walkFirst");
         _rwrPaceIndex = Properties.getValue("rwrMagicMilePace");
         _longRunPaceIndex = Properties.getValue("longRunMagicMilePace");
@@ -83,7 +85,11 @@ class DataFieldView extends WatchUi.DataField {
         }
         var distance = info.elapsedDistance;
         if (distance != null) {
-            var metersToGo = _workoutTargetDistance - distance;
+            var metersToGo = distance;
+            if (!_enableAlwaysOnMode) {
+                metersToGo = _workoutTargetDistance - distance;
+            }
+
             if (_distanceUnits == System.UNIT_METRIC){
                 _distanceToGo = Constants.METERS_TO_KM *  metersToGo;
             } else if (_distanceUnits == System.UNIT_STATUTE){
@@ -99,11 +105,9 @@ class DataFieldView extends WatchUi.DataField {
         var h = dc.getHeight();
         var w = dc.getWidth();
         var num_thai_h = dc.getFontHeight(Graphics.FONT_NUMBER_THAI_HOT);
-        // var num_hot_h = dc.getFontHeight(Graphics.FONT_NUMBER_HOT);
         var num_med_h = dc.getFontHeight(Graphics.FONT_NUMBER_MEDIUM);
-        // var num_mild_h = dc.getFontHeight(Graphics.FONT_NUMBER_MILD);
         var md_h = dc.getFontHeight(Graphics.FONT_MEDIUM);
-        var sm_h = dc.getFontHeight(Graphics.FONT_SMALL);
+        var xtin_h = dc.getFontHeight(Graphics.FONT_XTINY);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_WHITE);
         dc.clear();
@@ -114,6 +118,7 @@ class DataFieldView extends WatchUi.DataField {
         // Reset
         dc.setPenWidth(1);
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
+        // IF BLOCK STARTED HERE
         if (_runWalkState != Constants.STATE_INACTIVE){
             var secondsRemaining = getSecondsRemaining();
             var minutes = secondsRemaining / 60;
@@ -126,12 +131,23 @@ class DataFieldView extends WatchUi.DataField {
             dc.drawText(w / 2, (h/4 - md_h/2), Graphics.FONT_LARGE, _displayState, Graphics.TEXT_JUSTIFY_CENTER);
             dc.drawText(w / 2, ((h*3/4) - num_med_h/2), Graphics.FONT_NUMBER_MEDIUM, timeRemaining, Graphics.TEXT_JUSTIFY_CENTER);
         } else {
-            var minutes = _timerSeconds / 60;
-            var seconds = _timerSeconds % 60;
-            var totalTime = Lang.format("$1$:$2$", [minutes.format("%d"), seconds.format("%02d")]);
-            dc.drawText(w / 2, (h/2 - num_thai_h/2), Graphics.FONT_NUMBER_THAI_HOT, totalTime, Graphics.TEXT_JUSTIFY_CENTER);
-            dc.drawText(w / 2, (h/4 - sm_h/2), Graphics.FONT_SMALL, "Waiting for", Graphics.TEXT_JUSTIFY_CENTER);
-            dc.drawText(w / 2, ((h*3/4) - sm_h/2), Graphics.FONT_SMALL, "RunWalkRun", Graphics.TEXT_JUSTIFY_CENTER);
+            // var promptLabel = View.findDrawableById("prompt") as Text;
+
+            // promptLabel.setText("Timer will activate when a workout has RunWalkRun in the desciption.");
+            // // Draw text fields in layout
+            // var mainText = _mainText;
+            // if (mainText != null) {
+            //     for (var i = 0; i < mainText.size(); i++) {
+            //         mainText[i].draw(dc);
+            //     }
+            // }
+            // var minutes = _timerSeconds / 60;
+            // var seconds = _timerSeconds % 60;
+            // var totalTime = Lang.format("$1$:$2$", [minutes.format("%d"), seconds.format("%02d")]);
+            dc.drawText(w / 2, ((h*2/8) - xtin_h/2), Graphics.FONT_XTINY, "Timer will activate", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(w / 2, ((h*3/8) - xtin_h/2), Graphics.FONT_XTINY, "when a workout has", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(w / 2, ((h*4/8) - xtin_h/2), Graphics.FONT_XTINY, "'RunWalkRun' in the description", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(w / 2, ((h*5/8) - xtin_h/2), Graphics.FONT_XTINY, "or in 'Always On' mode", Graphics.TEXT_JUSTIFY_CENTER);
         }
     }
 
@@ -168,9 +184,15 @@ class DataFieldView extends WatchUi.DataField {
             System.println("Workout name: "+workout.name);
             System.println("Workout notes: "+workout.notes);
         }
-        if (workout != null){
+        if (workout != null || _enableAlwaysOnMode){
             var startRunWalk = false;
-            if(workout.notes.find("Run Walk Run") == 0){
+            if(_enableAlwaysOnMode){
+                startRunWalk = true;
+                if (!_manualRunWalk) {
+                    _runDuration = Constants.MAGIC_MILE_DURATIONS[_rwrPaceIndex][0];
+                    _walkDuration = Constants.MAGIC_MILE_DURATIONS[_rwrPaceIndex][1];
+                }
+            } else if(workout.notes.find("Run Walk Run") == 0){
                 startRunWalk = true;
                 if (!_manualRunWalk) {
                     _runDuration = Constants.MAGIC_MILE_DURATIONS[_rwrPaceIndex][0];
@@ -186,7 +208,9 @@ class DataFieldView extends WatchUi.DataField {
             if (startRunWalk) {
                 System.println("RUN WALK RUN started");
                 _intervalStartAt = _timerSeconds;
-                _workoutTargetDistance = info.elapsedDistance + workout.step.durationValue;
+                if (!_enableAlwaysOnMode){
+                    _workoutTargetDistance = info.elapsedDistance + workout.step.durationValue;
+                }
                 if (_walkFirst) {
                     _intervalEndAt = _intervalStartAt + _walkDuration;
                     _runWalkState = Constants.STATE_WALKING;
