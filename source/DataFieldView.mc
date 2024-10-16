@@ -121,7 +121,7 @@ class DataFieldView extends WatchUi.DataField {
         // Draw Border
         dc.setColor(_dataColor, _dataColor);
         dc.setPenWidth(8);
-        dc.drawCircle((w / 2)-4, (h / 2)-4, (w/2)-3);
+        dc.drawCircle((w / 2)-2, (h / 2), (w/2)-3);
         // Reset
         dc.setPenWidth(1);
         if(_darkMode){
