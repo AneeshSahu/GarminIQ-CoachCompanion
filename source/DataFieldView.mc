@@ -21,6 +21,7 @@ class DataFieldView extends WatchUi.DataField {
     private var _vibrateEnabled as Boolean?;
     private var _tonesEnabled as Boolean?;
     private var _distanceUnits as UnitsSystem?;
+    private var _darkMode as Boolean?;
 
     // RunWalk Interval State 
     private var _intervalStartAt as Number = 0;
@@ -51,6 +52,7 @@ class DataFieldView extends WatchUi.DataField {
 
         _vibrateEnabled = Properties.getValue("intervalVibrate");
         _tonesEnabled = Properties.getValue("intervalTones");
+        _darkMode = Properties.getValue("darkMode");
 
         if (_manualRunWalk) {
             _runDuration = Properties.getValue("runDuration");
@@ -109,7 +111,12 @@ class DataFieldView extends WatchUi.DataField {
         var md_h = dc.getFontHeight(Graphics.FONT_MEDIUM);
         var xtin_h = dc.getFontHeight(Graphics.FONT_XTINY);
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_WHITE);
+        if (_darkMode){
+            dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        }
+        else {
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_WHITE);
+        }
         dc.clear();
         // Draw Border
         dc.setColor(_dataColor, _dataColor);
@@ -117,7 +124,12 @@ class DataFieldView extends WatchUi.DataField {
         dc.drawCircle(w / 2, h / 2, (w/2)-3);
         // Reset
         dc.setPenWidth(1);
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
+        if(_darkMode){
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
+        }
+        else{
+            dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
+        }
         // IF BLOCK STARTED HERE
         if (_runWalkState != Constants.STATE_INACTIVE){
             var secondsRemaining = getSecondsRemaining();

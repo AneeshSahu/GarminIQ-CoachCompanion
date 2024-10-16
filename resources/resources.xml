@@ -7,7 +7,7 @@
         <property id="intervalVibrate" type="boolean">true</property>
         <property id="intervalTones" type="boolean">true</property>
 
-        <property id="enableAlwaysOnMode" type="boolean">false</property>
+        <property id="enableAlwaysOnMode" type="boolean">true</property>
         <property id="enableLongRun" type="boolean">false</property>
         <property id="longRunMagicMilePace" type="number">13</property>
 
@@ -15,6 +15,7 @@
         <property id="manualRunWalk" type="boolean">false</property>
         <property id="runDuration" type="number">60</property>
         <property id="walkDuration" type="number">60</property>
+        <property id="darkMode" type="boolean">true</property>
 
     </properties>
 
@@ -35,6 +36,7 @@
         <string id="manualRunWalk_setting_title">Use A Custom Run/Walk Time</string>
         <string id="runDuration_setting_title">Custom Run Duration (in seconds)</string>
         <string id="walkDuration_setting_title">Custom Walk Duration (in seconds)</string>
+        <string id="darkMode_setting_title">Turn on Dark Mode</string>
 
         <string id="mm7_00">7:00 [Run 6:00 | Walk 0:30] </string>
         <string id="mm7_30">7:30 [Run 5:00 | Walk 0:30] </string>
@@ -162,6 +164,9 @@
         </setting>
         <setting propertyKey="@Properties.walkDuration" title="@Strings.walkDuration_setting_title">
             <settingConfig type="numeric" min="1"/> 
+        </setting>
+        <setting propertyKey="@Properties.darkMode" title="@Strings.darkMode_setting_title">
+            <settingConfig type="boolean" />
         </setting>
     </settings>
 </resources>
