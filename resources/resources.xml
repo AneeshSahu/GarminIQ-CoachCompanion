@@ -7,7 +7,7 @@
         <property id="intervalVibrate" type="boolean">true</property>
         <property id="intervalTones" type="boolean">true</property>
 
-        <property id="enableAlwaysOnMode" type="boolean">false</property>
+        <property id="enableAlwaysOnMode" type="boolean">true</property>
         <property id="enableLongRun" type="boolean">false</property>
         <property id="longRunMagicMilePace" type="number">13</property>
 
@@ -38,6 +38,7 @@
         <string id="runDuration_setting_title">Custom Run Duration (in seconds)</string>
         <string id="walkDuration_setting_title">Custom Walk Duration (in seconds)</string>
         <string id="darkMode_setting_title">Turn on Dark Mode</string>
+        <string id="progressBar_setting_title">Enable Garmin like progress bar</string>
         <string id="progressBar_setting_title">Enable Garmin like progress bar</string>
 
         <string id="mm7_00">7:00 [Run 6:00 | Walk 0:30] </string>

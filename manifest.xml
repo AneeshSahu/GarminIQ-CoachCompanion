@@ -6,7 +6,7 @@
         to update the application attributes.
 
     -->
-    <iq:application id="5ed7a98b-5beb-415b-b154-a0d3f78ff55e" type="datafield" name="@Strings.AppName" entry="App" launcherIcon="@Drawables.LauncherIcon" minApiLevel="3.2.0">
+    <iq:application id="5ed7a98b-5beb-415b-b154-a0d3f78ff56e" type="datafield" name="@Strings.AppName" entry="App" launcherIcon="@Drawables.LauncherIcon" minApiLevel="3.2.0">
         <!--
             Use the following from the Visual Studio Code comand palette to edit
             the build targets:

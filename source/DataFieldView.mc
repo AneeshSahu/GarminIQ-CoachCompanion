@@ -22,6 +22,7 @@ class DataFieldView extends WatchUi.DataField {
     private var _tonesEnabled as Boolean?;
     private var _distanceUnits as UnitsSystem?;
     private var _darkMode as Boolean?;
+    private var _progressBar as Boolean?;
 
     // RunWalk Interval State 
     private var _intervalStartAt as Number = 0;
@@ -30,6 +31,7 @@ class DataFieldView extends WatchUi.DataField {
     private var _workoutTargetDistance as Float = 0.0;
     private var _distanceToGo as Float = 0.0;
     public var _runWalkState as Constants.RunWalkState = Constants.STATE_INACTIVE;
+    private var _angle as Float?;
 
     // Display values
     private var _dataColor as Graphics.ColorType = Graphics.COLOR_LT_GRAY;
@@ -53,6 +55,7 @@ class DataFieldView extends WatchUi.DataField {
         _vibrateEnabled = Properties.getValue("intervalVibrate");
         _tonesEnabled = Properties.getValue("intervalTones");
         _darkMode = Properties.getValue("darkMode");
+        _progressBar = Properties.getValue("progressBar");
 
         if (_manualRunWalk) {
             _runDuration = Properties.getValue("runDuration");
@@ -90,6 +93,7 @@ class DataFieldView extends WatchUi.DataField {
             var metersToGo = distance;
             if (!_enableAlwaysOnMode) {
                 metersToGo = _workoutTargetDistance - distance;
+                _angle = (1- (metersToGo/_workoutTargetDistance))*2*3.14;
             }
 
             if (_distanceUnits == System.UNIT_METRIC){
@@ -121,7 +125,7 @@ class DataFieldView extends WatchUi.DataField {
         // Draw Border
         dc.setColor(_dataColor, _dataColor);
         dc.setPenWidth(8);
-        dc.drawCircle((w / 2), (h / 2), (w/2)-7);
+        dc.drawCircle((w / 2)-4, (h / 2)-4, (w/2)-7);
         // Reset
         dc.setPenWidth(1);
         if(_darkMode){
